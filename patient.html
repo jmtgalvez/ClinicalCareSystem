@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patients List | Clinical Care System</title>
+    <style>
+        main {
+            margin: 200px;
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1 id="greetings"></h1>
+        <table id="patient-table" border="1" cellspacing="3" cellpadding="20">
+            <tr>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Birthdate</th>
+                <th>Age</th>
+                <th>Email</th>
+            </tr>
+        </table>
+    </main>
+
+    <script>
+        const USERNAME = new URLSearchParams(window.location.search).get("username")
+        document.getElementById("greetings").innerText = `Good day, ${USERNAME}!`
+        const PATIENT_TABLE = document.getElementById("patient-table")
+        const CURR_DATE = new Date()
+        const DATA = [{
+                        "first_name": "Parke",
+                        "middle_name": "Trayhorn",
+                        "last_name": "Wroath",
+                        "birthday": "4/5/1991",
+                        "email": "pwroath0@networkadvertising.org"
+                    }, {
+                        "first_name": "Nico",
+                        "middle_name": "Brouard",
+                        "last_name": "Meagher",
+                        "birthday": "12/11/1952",
+                        "email": "nmeagher1@reuters.com"
+                    }, {
+                        "first_name": "Valaria",
+                        "middle_name": "Farfull",
+                        "last_name": "Robus",
+                        "birthday": "6/13/1976",
+                        "email": "vrobus2@parallels.com"
+                    }, {
+                        "first_name": "Lucky",
+                        "middle_name": "Levine",
+                        "last_name": "Roscoe",
+                        "birthday": "7/24/1939",
+                        "email": "lroscoe3@fda.gov"
+                    }, {
+                        "first_name": "Avril",
+                        "middle_name": "Thrush",
+                        "last_name": "Klimt",
+                        "birthday": "6/17/1942",
+                        "email": "aklimt4@mashable.com"
+                    }]
+
+        DATA.forEach( data => { insertData(data)})
+
+        function insertData(data) {
+            const TABLE_ROW = document.createElement("tr")
+            var first_name_node = document.createElement("td")
+            first_name_node.appendChild(document.createTextNode(data["first_name"]))
+            var middle_name_node = document.createElement("td")
+            middle_name_node.appendChild(document.createTextNode(data["middle_name"]))
+            var last_name_node = document.createElement("td")
+            last_name_node.appendChild(document.createTextNode(data["last_name"]))
+            var birthday_node = document.createElement("td")
+            birthday_node.appendChild(document.createTextNode(data["birthday"]))
+            var age_node = document.createElement("td")
+            age_node.appendChild(document.createTextNode(daysBetween(CURR_DATE, data["birthday"])))
+            var email_node = document.createElement("td")
+            email_node.appendChild(document.createTextNode(data["email"]))
+
+            TABLE_ROW.appendChild(first_name_node)
+            TABLE_ROW.appendChild(middle_name_node)
+            TABLE_ROW.appendChild(last_name_node)
+            TABLE_ROW.appendChild(birthday_node)
+            TABLE_ROW.appendChild(age_node)
+            TABLE_ROW.appendChild(email_node)
+
+            PATIENT_TABLE.appendChild(TABLE_ROW)
+        }
+
+        function daysBetween(date1, date2) {
+            return Math.floor((new Date(date1) - new Date(date2)) / 1000 / 60 / 60 / 24 / 365)
+        }
+    </script>
+</body>
+</html>
