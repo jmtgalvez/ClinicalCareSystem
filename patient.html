@@ -7,12 +7,31 @@
     <title>Patients List | Clinical Care System</title>
     <style>
         main {
+            font-family: sans-serif;
             margin: 200px;
             display: grid;
             justify-content: center;
             align-items: center;
             font-size: 1.3em;
         }
+        th{
+            background-color: blue;
+            color: white;
+        }
+        #add-patient > input[type="submit"] {
+            margin: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            width: fit-content;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1em;
+            font-weight: 700;
+            color: white;
+            background-color: green;
+        }
+        .hidden { display: none;}
     </style>
 </head>
 <body>
@@ -28,12 +47,13 @@
                 <th>Email</th>
             </tr>
         </table>
+        <form id="add-patient" action="patient_form.html">
+            <input type="text" name="username" id="username" class="hidden">
+            <input type="submit" value="Add Patient">
+        </form>
     </main>
 
     <script>
-        const USERNAME = new URLSearchParams(window.location.search).get("username")
-        document.getElementById("greetings").innerText = `Good day, ${USERNAME}!`
-        const PATIENT_TABLE = document.getElementById("patient-table")
         const CURR_DATE = new Date()
         const DATA = [{
                         "first_name": "Parke",
@@ -66,6 +86,20 @@
                         "birthday": "6/17/1942",
                         "email": "aklimt4@mashable.com"
                     }]
+        const USERNAME = new URLSearchParams(window.location.search).get("username")
+        document.getElementById("greetings").innerText = `Good day, ${USERNAME}!`
+        document.getElementById("username").value = USERNAME
+        const FIRST_NAME = new URLSearchParams(window.location.search).get("first_name")
+        if (FIRST_NAME) {
+            const MIDDLE_NAME = new URLSearchParams(window.location.search).get("middle_name")
+            const LAST_NAME = new URLSearchParams(window.location.search).get("last_name")
+            const BIRTHDAY = new URLSearchParams(window.location.search).get("birthday")
+            const EMAIL = new URLSearchParams(window.location.search).get("email")
+            var patient = newPatient(FIRST_NAME, MIDDLE_NAME, LAST_NAME, BIRTHDAY, EMAIL)
+            DATA.push(patient)
+        }
+        
+        const PATIENT_TABLE = document.getElementById("patient-table")
 
         DATA.forEach( data => { insertData(data)})
 
@@ -78,7 +112,7 @@
             var last_name_node = document.createElement("td")
             last_name_node.appendChild(document.createTextNode(data["last_name"]))
             var birthday_node = document.createElement("td")
-            birthday_node.appendChild(document.createTextNode(data["birthday"]))
+            birthday_node.appendChild(document.createTextNode(new Date(data["birthday"]).toLocaleDateString()))
             var age_node = document.createElement("td")
             age_node.appendChild(document.createTextNode(daysBetween(CURR_DATE, data["birthday"])))
             var email_node = document.createElement("td")
@@ -96,6 +130,17 @@
 
         function daysBetween(date1, date2) {
             return Math.floor((new Date(date1) - new Date(date2)) / 1000 / 60 / 60 / 24 / 365)
+        }
+
+        function newPatient(first_name, middle_name, last_name, birthday, email) {
+            const patient = {
+                "first_name": first_name,
+                "middle_name": middle_name,
+                "last_name": last_name,
+                "birthday": birthday,
+                "email": email,
+            }
+            return patient
         }
     </script>
 </body>
