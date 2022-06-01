@@ -1820,6 +1820,8 @@ document.querySelector("#province").addEventListener("change", () => {
         new_option.selected = true
         $city.appendChild(new_option)
         CITIES[province].forEach( city => {
+            city = city.replace(/&ntilde;/g, "ñ")
+            city = city.replace(/&Ntilde;/g, "Ñ")
             var new_option = document.createElement("option")
             new_option.value = city
             new_option.innerText = city
